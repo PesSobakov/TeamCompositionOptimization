@@ -1,4 +1,5 @@
 # TeamCompositionOptimization
+
 Master's degree diploma work (ASP.NET Core Web API plus Angular frontend)
 
 Backend
@@ -8,4 +9,4 @@ Backend
 Frontend
 - Angular
 - Material Design library
-- internationalization
+- internationalization via @angular/localize
