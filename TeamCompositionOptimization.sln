@@ -1,0 +1,33 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.9.34607.119
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TeamCompositionOptimizationApi", "TeamCompositionOptimizationApi\TeamCompositionOptimizationApi.csproj", "{6779F9CB-069A-476F-B187-700D3C919071}"
+EndProject
+Project("{54A90642-561A-4BB1-A94E-469ADEE60C69}") = "TeamCompositionOptimizationFront", "TeamCompositionOptimizationFront\TeamCompositionOptimizationFront.esproj", "{7F9987C3-325E-4C57-B6FC-4A642DC13CDC}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{6779F9CB-069A-476F-B187-700D3C919071}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6779F9CB-069A-476F-B187-700D3C919071}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6779F9CB-069A-476F-B187-700D3C919071}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6779F9CB-069A-476F-B187-700D3C919071}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7F9987C3-325E-4C57-B6FC-4A642DC13CDC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7F9987C3-325E-4C57-B6FC-4A642DC13CDC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7F9987C3-325E-4C57-B6FC-4A642DC13CDC}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{7F9987C3-325E-4C57-B6FC-4A642DC13CDC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7F9987C3-325E-4C57-B6FC-4A642DC13CDC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7F9987C3-325E-4C57-B6FC-4A642DC13CDC}.Release|Any CPU.Deploy.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {7BD2AD73-FACF-4BBA-8499-BB537B29F0C2}
+	EndGlobalSection
+EndGlobal
