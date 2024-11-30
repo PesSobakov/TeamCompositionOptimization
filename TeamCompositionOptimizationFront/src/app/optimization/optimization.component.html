@@ -1,0 +1,667 @@
+<div class="p10 w-fit">
+    <div class="p10">
+        <mat-expansion-panel hideToggle expanded>
+            <mat-expansion-panel-header>
+                <mat-panel-title i18n> Optimization </mat-panel-title>
+            </mat-expansion-panel-header>
+            <div>
+                <div i18n class="p10">
+                    Competencies
+                </div>
+                <div class="p10">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>
+
+                                </th>
+                                <th i18n>
+                                    Competency
+                                </th>
+                                <th i18n>
+                                    Value
+                                </th>
+                                <th i18n>
+                                    Deviation
+                                </th>
+                                <th i18n>
+                                    Weight
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <ng-container *ngFor="let indicator of indicators">
+                                <tr>
+                                    <ng-container *ngIf="indicator.competencyId!=competencyEditId;else competencyEditTemplate">
+                                        <td>
+                                            <mat-checkbox [(ngModel)]="getCheckedIndicator(indicator).isChecked"></mat-checkbox>
+                                        </td>
+                                        <td>
+                                            {{competencyName(indicator.competencyId)}}
+                                        </td>
+                                        <td>
+                                            <input type="number" class="width5 w-fill" [class.invalid-input]="value.invalid" [(ngModel)]="indicator.value" name="value" #value="ngModel" required min="0" (input)="changeIndicatorValidValue(indicator,value.valid??false)" />
+                                        </td>
+                                        <td>
+                                            <input type="number" class="width5 w-fill" [class.invalid-input]="deviation.invalid" [(ngModel)]="indicator.deviation" name="deviation" #deviation="ngModel" required min="0" (input)="changeIndicatorValidDeviation(indicator,deviation.valid??false)" />
+                                        </td>
+                                        <td>
+                                            <input type="number" class="width5 w-fill" [class.invalid-input]="weight.invalid" [(ngModel)]="indicator.weight" name="weight" #weight="ngModel" required min="0" (input)="changeIndicatorValidWeight(indicator,weight.valid??false)" />
+                                        </td>
+                                        <td>
+                                            <button i18n mat-stroked-button (click)="editCompetency(getCompetencyById(indicator.competencyId)!)">Edit name</button>
+                                        </td>
+                                        <td>
+                                            <button i18n mat-stroked-button (click)="deleteCompetency(indicator.competencyId)">Delete competency</button>
+                                        </td>
+                                    </ng-container>
+                                    <ng-template #competencyEditTemplate>
+                                        <td>
+                                        </td>
+                                        <td>
+                                            <input type="text" class="w-fill" [class.invalid-input]="name.invalid" [(ngModel)]="competencyEdit.name" name="name" #name="ngModel" required />
+                                        </td>
+                                        <td>
+                                            {{indicator.value}}
+                                        </td>
+                                        <td>
+                                            {{indicator.deviation}}
+                                        </td>
+                                        <td>
+                                            {{indicator.weight}}
+                                        </td>
+                                        <td>
+                                            <button i18n mat-stroked-button (click)="confirmEditCompetency(competencyEdit)" [disabled]="name.invalid">Confirm</button>
+                                        </td>
+                                        <td>
+                                            <button i18n mat-stroked-button (click)="cancelEditCompetency()">Cancel</button>
+                                        </td>
+                                    </ng-template>
+                                </tr>
+                            </ng-container>
+                            <tr>
+                                <ng-container *ngIf="!isCreatingCompetency;else createCompetencyTemplate">
+                                    <td colspan="3">
+                                        <button i18n mat-stroked-button (click)="createCompetency()">Add competency</button>
+                                    </td>
+                                </ng-container>
+                                <ng-template #createCompetencyTemplate>
+                                    <td>
+                                    </td>
+                                    <td>
+                                        <input type="text" class="w-fill" [class.invalid-input]="name.invalid&&(name.touched||name.dirty)" [(ngModel)]="competencyCreate.name" name="name" #name="ngModel" required />
+                                    </td>
+                                    <ng-container *ngIf="name.invalid&&(name.touched||name.dirty)">
+                                        <td>
+                                            <div i18n class="red">
+                                                Name is required
+                                            </div>
+                                        </td>
+                                    </ng-container>
+                                    <td>
+                                        <button i18n mat-stroked-button (click)="createCompetencyConfirm(competencyCreate)" [disabled]="name.invalid">Confirm</button>
+                                    </td>
+                                    <td>
+                                        <button i18n mat-stroked-button (click)="createCompetencyCancel()">Cancel</button>
+                                    </td>
+                                </ng-template>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <ng-container *ngIf="!isIndicatorsValueValid()">
+                        <div i18n class="red">
+                            Competency value must be number equal or greater than 0
+                        </div>
+                    </ng-container>
+                    <ng-container *ngIf="!isIndicatorsDeviationValid()">
+                        <div i18n class="red">
+                            Competency deviation must be number equal or greater than 0
+                        </div>
+                    </ng-container>
+                    <ng-container *ngIf="!isIndicatorsWeightValid()">
+                        <div i18n class="red">
+                            Competency weight must be number equal or greater than 0
+                        </div>
+                    </ng-container>
+                </div>
+
+                <div i18n class="p10">
+                    Candidates
+                </div>
+                <div class="p10">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th rowspan="2">
+
+                                </th>
+                                <th i18n rowspan="2">
+                                    Name
+                                </th>
+                                <th i18n rowspan="2">
+                                    Salary
+                                </th>
+                                <th i18n rowspan="2">
+                                    Working time
+                                </th>
+                                <ng-container *ngFor="let competency of competencies">
+                                    <th colspan="2">
+                                        {{competency.name}}
+                                    </th>
+                                </ng-container>
+                            </tr>
+                            <tr>
+                                <ng-container *ngFor="let competency of competencies">
+                                    <th i18n class="vertical-text">
+                                        Value
+                                    </th>
+                                    <!--  <th class="vertical-text">
+                                        deviation left
+                                    </th>-->
+                                    <th i18n class="vertical-text">
+                                        Deviation
+                                        <!-- right-->
+                                    </th>
+                                </ng-container>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <ng-container *ngFor="let candidate of candidates">
+                                <tr>
+                                    <ng-container *ngIf="candidate.id!=candidateEditId;else candidateEditTemplate">
+                                        <td>
+                                            <mat-checkbox [(ngModel)]="getCheckedCandidate(candidate).isChecked"></mat-checkbox>
+                                        </td>
+                                        <td>
+                                            {{candidate.name}}
+                                        </td>
+                                        <td>
+                                            {{roundNumber(candidate.salary)}}
+                                        </td>
+                                        <td>
+                                            {{roundNumber(candidate.workingTime)}}
+                                        </td>
+                                        <ng-container *ngFor="let competency of competencies">
+                                            <td>
+                                                {{roundNumber(getCompetency(candidate,competency)?.value??0)}}
+                                            </td>
+                                            <!--   <td>
+                                                {{getCompetency(candidate,competency)?.deviationLeft??0}}
+                                            </td>-->
+                                            <td>
+                                                {{roundNumber(getCompetency(candidate,competency)?.deviationRight??0)}}
+                                            </td>
+                                        </ng-container>
+                                        <td>
+                                            <button i18n mat-stroked-button (click)="editCandidate(candidate)">Edit</button>
+                                        </td>
+                                        <td>
+                                            <button i18n mat-stroked-button (click)="deleteCandidate(candidate.id)">Delete</button>
+                                        </td>
+                                    </ng-container>
+                                    <ng-template #candidateEditTemplate>
+                                        <td>
+                                        </td>
+                                        <td>
+                                            <input type="text" [class.invalid-input]="name.invalid" class="w-fill" [(ngModel)]="candidateEdit.name" name="name" #name="ngModel" required />
+                                        </td>
+                                        <td>
+                                            <input type="number" [class.invalid-input]="salary.invalid" class="width5 w-fill" [(ngModel)]="candidateEdit.salary" name="salary" #salary="ngModel" required min="0" />
+                                        </td>
+                                        <td>
+                                            <input type="number" [class.invalid-input]="workingTime.invalid" class="width5 w-fill" [(ngModel)]="candidateEdit.workingTime" name="workingTime" #workingTime="ngModel" required min="0" />
+                                        </td>
+                                        <ng-container *ngFor="let competency of competencies">
+                                            <td>
+                                                <input type="number" [class.invalid-input]="value.invalid" class="width5 w-fill" [(ngModel)]="getCompetency(candidateEdit,competency)!.value" name="value" #value="ngModel" required min="0" (input)="changeCandidateEditValidValue(competency,value.valid??false)" />
+                                            </td>
+                                            <td>
+                                                <input type="number" [class.invalid-input]="deviationRight.invalid" class="width5 w-fill" [(ngModel)]="getCompetency(candidateEdit,competency)!.deviationRight" name="deviationRight" #deviationRight="ngModel" required min="0" (input)="changeCandidateEditValidDeviation(competency,value.valid??false)" />
+                                            </td>
+                                        </ng-container>
+                                        <td>
+                                            <button i18n mat-stroked-button (click)="confirmEditCandidate(candidateEdit)" [disabled]="name.invalid|| salary.invalid||workingTime.invalid ||!isCandidateEditValid()">Confirm</button>
+                                        </td>
+                                        <td>
+                                            <button i18n mat-stroked-button (click)="cancelEditCandidate()">Cancel</button>
+                                        </td>
+                                    </ng-template>
+                                </tr>
+                            </ng-container>
+                            <tr>
+                                <ng-container *ngIf="!isCreatingCandidate;else createCandidateTemplate">
+                                    <td rowspan="3">
+                                        <button i18n mat-stroked-button (click)="createCandidate()">Add</button>
+                                    </td>
+                                </ng-container>
+                                <ng-template #createCandidateTemplate>
+                                    <td>
+                                    </td>
+                                    <td>
+                                        <input type="text" [class.invalid-input]="name.invalid" class="w-fill" [(ngModel)]="candidateCreate.name" name="name" #name="ngModel" required />
+                                    </td>
+                                    <td>
+                                        <input type="number" [class.invalid-input]="salary.invalid" class="width5 w-fill" [(ngModel)]="candidateCreate.salary" name="salary" #salary="ngModel" required min="0" />
+                                    </td>
+                                    <td>
+                                        <input type="number" [class.invalid-input]="workingTime.invalid" class="width5 w-fill" [(ngModel)]="candidateCreate.workingTime" name="workingTime" #workingTime="ngModel" required min="0" />
+                                    </td>
+                                    <ng-container *ngFor="let competency of competencies">
+                                        <td>
+                                            <input type="number" [class.invalid-input]="value.invalid" class="width5 w-fill" [(ngModel)]="getCompetency(candidateCreate,competency)!.value" name="value" #value="ngModel" required min="0" (input)="changeCandidateEditValidValue(competency,value.valid??false)" />
+                                        </td>
+                                        <td>
+                                            <input type="number" [class.invalid-input]="deviationRight.invalid" class="width5 w-fill" [(ngModel)]="getCompetency(candidateCreate,competency)!.deviationRight" name="deviationRight" #deviationRight="ngModel" required min="0" (input)="changeCandidateEditValidDeviation(competency,value.valid??false)" />
+                                        </td>
+                                    </ng-container>
+                                    <td>
+                                        <button i18n mat-stroked-button (click)="createCandidateConfirm(candidateCreate)">Confirm</button>
+                                    </td>
+                                    <td>
+                                        <button i18n mat-stroked-button (click)="createCandidateCancel()">Cancel</button>
+                                    </td>
+                                </ng-template>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="p10">
+                    <div>
+                        <div class="hp5">
+                            <div i18n>
+                                Threshold
+                            </div>
+                            <div>
+                                <input type="number" class="width20" [class.invalid-input]="thresholdModel.invalid" [(ngModel)]="threshold" name="thresholdModel" #thresholdModel="ngModel" required min="0" max="1" step="0.1" />
+                            </div>
+                        </div>
+                        <div class="hp5">
+                            <div i18n>
+                                Budget
+                            </div>
+                            <div>
+                                <input type="number" class="width20" [class.invalid-input]="budgetModel.invalid" [(ngModel)]="budget" name="budgetModel" #budgetModel="ngModel" required min="0" />
+                            </div>
+                        </div>
+                        <div class="hp5">
+                            <div i18n>
+                                Laboriousness
+                            </div>
+                            <div>
+                                <input type="number" class="width20" [class.invalid-input]="laboriousnessModel.invalid" [(ngModel)]="laboriousness" name="laboriousnessModel" #laboriousnessModel="ngModel" required min="0" />
+                            </div>
+                        </div>
+                        <div class="hp5">
+                            <div i18n>
+                                Time
+                            </div>
+                            <div>
+                                <input type="number" class="width20" [class.invalid-input]="timeModel.invalid" [(ngModel)]="time" name="timeModel" #timeModel="ngModel" required min="0" />
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="hp5">
+                        <ng-container *ngIf="optimizationError">
+                            <div class="red">
+                                {{optimizationError}}
+                            </div>
+                        </ng-container>
+                        <ng-container *ngIf="!isIndicatorsValid()||thresholdModel.invalid||budgetModel.invalid||laboriousnessModel.invalid||timeModel.invalid">
+                            <div i18n class="red">
+                                Competency error
+                            </div>
+                        </ng-container>
+                        <ng-container *ngIf="!isSelectedCandidates()">
+                            <div i18n class="red">
+                                At least one candidate must be selected
+                            </div>
+                        </ng-container>
+                        <ng-container *ngIf="!isSelectedCompetencies()">
+                            <div i18n class="red">
+                                At least one competency must be selected
+                            </div>
+                        </ng-container>
+                    </div>
+
+                    <div class="p10">
+                        <button i18n mat-stroked-button [disabled]="!isIndicatorsValid()||!isSelectedCandidates()||!isSelectedCompetencies()" (click)="optimize()">Optimize</button>
+                    </div>
+
+                    <div class="p10">
+                        <button i18n mat-stroked-button [disabled]="!isIndicatorsValid()||!isSelectedCandidates()||!isSelectedCompetencies()" (click)="select()">Rank candidates</button>
+                    </div>
+                </div>
+            </div>
+        </mat-expansion-panel>
+    </div>
+
+    <ng-container *ngIf="selectionResult">
+        <div class="p10">
+            <mat-expansion-panel hideToggle>
+                <mat-expansion-panel-header>
+                    <mat-panel-title i18n> Ranked candidates </mat-panel-title>
+                </mat-expansion-panel-header>
+                <div class="p10">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th i18n>
+                                    Competency
+                                </th>
+                                <th i18n>
+                                    Value
+                                </th>
+                                <th i18n>
+                                    Deviation
+                                </th>
+                                <th i18n>
+                                    Weight
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <ng-container *ngFor="let indicator of selectionResult.indicators">
+                                <tr>
+                                    <td>
+                                        {{indicator.competency.name}}
+                                    </td>
+                                    <td>
+                                        {{roundNumber(indicator.value)}}
+                                    </td>
+                                    <td>
+                                        {{roundNumber(indicator.deviation)}}
+                                    </td>
+                                    <td>
+                                        {{roundNumber(indicator.weight)}}
+                                    </td>
+                                </tr>
+                            </ng-container>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="p10">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th i18n rowspan="2">
+                                    Generalized competency
+                                </th>
+                                <th i18n rowspan="2">
+                                    Name
+                                </th>
+                                <th i18n rowspan="2">
+                                    Salary
+                                </th>
+                                <th i18n rowspan="2">
+                                    Working time
+                                </th>
+                                <ng-container *ngFor="let indicator of selectionResult.indicators">
+                                    <th colspan="2">
+                                        {{indicator.competency.name}}
+                                    </th>
+                                </ng-container>
+                            </tr>
+                            <tr>
+                                <ng-container *ngFor="let indicator of selectionResult.indicators">
+                                    <th i18n class="vertical-text">
+                                        Value
+                                    </th>
+                                    <th i18n class="vertical-text">
+                                        Deviation
+                                    </th>
+                                </ng-container>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!---->
+                            <ng-container *ngFor="let competence of selectionResult.generalizedCompetences">
+                                <tr>
+                                    <td>
+                                        {{roundNumber(competence.competence)}}
+                                    </td>
+                                    <td>
+                                        {{getSelectionCandidateById(competence.id)?.name}}
+                                    </td>
+                                    <td>
+                                        {{roundNumber(getSelectionCandidateById(competence.id)?.salary)}}
+                                    </td>
+                                    <td>
+                                        {{(getSelectionCandidateById(competence.id)?.workingTime)}}
+                                    </td>
+                                    <ng-container *ngFor="let indicator of selectionResult.indicators">
+                                        <td>
+                                            {{roundNumber(getCompetency(getSelectionCandidateById(competence.id),indicator.competency)?.value??0)}}
+                                        </td>
+                                        <td>
+                                            {{roundNumber(getCompetency(getSelectionCandidateById(competence.id),indicator.competency)?.deviationRight??0)}}
+                                        </td>
+                                    </ng-container>
+                                </tr>
+                            </ng-container>
+                        </tbody>
+                    </table>
+                </div>
+            </mat-expansion-panel>
+        </div>
+    </ng-container>
+
+    <div class="p10">
+        <mat-expansion-panel hideToggle>
+            <mat-expansion-panel-header>
+                <mat-panel-title i18n> Results </mat-panel-title>
+            </mat-expansion-panel-header>
+            <div>
+                <div class="p10">
+                    <ng-container *ngFor="let result of results">
+                        <button [class.selected-dark]="currentResult==result" mat-stroked-button (click)="selectResult(result.id)">{{result.id}}</button>
+                    </ng-container>
+                </div>
+                <div class="p10">
+                    <ng-container *ngIf="currentResult">
+                        <div class="p10">
+                            <button i18n mat-stroked-button (click)="export()">Print result</button>
+                        </div>
+                        <div class="p10">
+                            <button i18n mat-stroked-button (click)="deleteResult(currentResult.id)">Delete</button>
+                        </div>
+                        <div id="pdf" #pdf>
+                            <div class="p10">
+                                <strong i18n>
+                                    Result {{currentResult.id}}
+                                </strong>
+                            </div>
+                            <div i18n class="p10">
+                                Parameters
+                            </div>
+                            <div class="p10">
+                                <div>
+                                    <span i18n> Threshold </span>
+                                    <span> {{roundNumber(currentResult.threshold)}} </span>
+                                </div>
+                                <div>
+                                    <span i18n> Budget </span>
+                                    <span> {{roundNumber(currentResult.budget)}} </span>
+                                </div>
+                                <div>
+                                    <span i18n> Laboriousness </span>
+                                    <span> {{roundNumber(currentResult.laboriousness)}} </span>
+                                </div>
+                                <div>
+                                    <span i18n> Time </span>
+                                    <span> {{roundNumber(currentResult.time)}} </span>
+                                </div>
+                            </div>
+                            <div i18n class="p10">
+                                Competencies
+                            </div>
+                            <div class="p10">
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th i18n>
+                                                Competency
+                                            </th>
+                                            <th i18n>
+                                                Value
+                                            </th>
+                                            <th i18n>
+                                                Deviation
+                                            </th>
+                                            <th i18n>
+                                                Weight
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <ng-container *ngFor="let indicator of currentResult.indicators">
+                                            <tr>
+                                                <td>
+                                                    {{indicator.competency.name}}
+                                                </td>
+                                                <td>
+                                                    {{roundNumber(indicator.value)}}
+                                                </td>
+                                                <td>
+                                                    {{roundNumber(indicator.deviation)}}
+                                                </td>
+                                                <td>
+                                                    {{roundNumber(indicator.weight)}}
+                                                </td>
+                                            </tr>
+                                        </ng-container>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div i18n class="p10">
+                                Candidates
+                            </div>
+                            <div class="p10">
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th i18n rowspan="2">
+                                                Name
+                                            </th>
+                                            <th i18n rowspan="2">
+                                                Salary
+                                            </th>
+                                            <th i18n rowspan="2">
+                                                Working time
+                                            </th>
+                                            <ng-container *ngFor="let indicator of currentResult.indicators">
+                                                <th colspan="2">
+                                                    {{indicator.competency.name}}
+                                                </th>
+                                            </ng-container>
+                                        </tr>
+                                        <tr>
+                                            <ng-container *ngFor="let indicator of currentResult.indicators">
+                                                <th i18n class="vertical-text">
+                                                    Value
+                                                </th>
+                                                <th i18n class="vertical-text">
+                                                    Deviation
+                                                </th>
+                                            </ng-container>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <ng-container *ngFor="let candidate of currentResult.candidates">
+                                            <tr>
+                                                <td>
+                                                    {{candidate.name}}
+                                                </td>
+                                                <td>
+                                                    {{roundNumber(candidate.salary)}}
+                                                </td>
+                                                <td>
+                                                    {{roundNumber(candidate.workingTime)}}
+                                                </td>
+                                                <ng-container *ngFor="let indicator of currentResult.indicators">
+                                                    <td>
+                                                        {{roundNumber(getCompetency(candidate,indicator.competency)?.value??0)}}
+                                                    </td>
+                                                    <td>
+                                                        {{roundNumber(getCompetency(candidate,indicator.competency)?.deviationRight??0)}}
+                                                    </td>
+                                                </ng-container>
+                                            </tr>
+                                        </ng-container>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <!---->
+                            <div i18n class="p10">
+                                Team options
+                            </div>
+                            <div class="p10">
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th i18n rowspan="2">
+                                                Candidates
+                                            </th>
+                                            <th i18n rowspan="2">
+                                                Sum of max competencies
+                                            </th>
+                                            <th i18n rowspan="2">
+                                                Sum of competencies multiplied by weight
+                                            </th>
+                                            <th i18n rowspan="2">
+                                                Cost
+                                            </th>
+                                            <th i18n rowspan="2">
+                                                Teamwork time
+                                            </th>
+                                            <th i18n [attr.colspan]="currentResult.indicators.length">
+                                                Maximum competencies
+                                            </th>
+                                        </tr>
+                                        <tr>
+                                            <ng-container *ngFor="let indicator of currentResult.indicators">
+                                                <th>
+                                                    {{indicator.competency.name}}
+                                                </th>
+                                            </ng-container>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <ng-container *ngFor="let teamOption of currentResult.teamOptions">
+                                            <tr>
+                                                <td>
+                                                    <ng-container *ngFor="let candidate of teamOption.candidates">
+                                                        <span> {{candidate.name}} </span>
+                                                    </ng-container>
+                                                </td>
+                                                <td>
+                                                    {{roundNumber(teamOption.criteria1)}}
+                                                </td>
+                                                <td>
+                                                    {{roundNumber(teamOption.criteria2)}}
+                                                </td>
+                                                <td>
+                                                    {{roundNumber(teamOption.cost)}}
+                                                </td>
+                                                <td>
+                                                    {{roundNumber(teamOption.teamworkTime)}}
+                                                </td>
+                                                <ng-container *ngFor="let indicator of currentResult.indicators">
+                                                    <td>
+                                                        <span> {{roundNumber(getCompliance(teamOption, indicator)?.value)}} </span>
+                                                    </td>
+                                                </ng-container>
+                                            </tr>
+                                        </ng-container>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </ng-container>
+                </div>
+            </div>
+        </mat-expansion-panel>
+    </div>
+</div>

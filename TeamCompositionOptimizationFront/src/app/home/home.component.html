@@ -1,0 +1,13 @@
+<div style="text-align: center">
+    <p i18n>Advertisement</p>
+    <div>
+        <a href="https://beinsafe.com.ua">
+            <img height="200" *ngIf="isEn()" src=" .. /../assets/video en.png" />
+            <img height="200" *ngIf="!isEn()" src=" .. /../assets/video ua.png" />
+        </a>
+    </div>
+
+    <h1 i18n>Optimize your team composition</h1>
+    <p i18n>In this app you can rank your candidates and get the best team options that meet constraints</p>
+    <p i18n><a routerLink="/login">Register and log in</a> to start <a routerLink="/optimization">optimization</a></p>
+</div>

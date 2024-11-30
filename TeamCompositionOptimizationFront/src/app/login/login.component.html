@@ -1,0 +1,47 @@
+<div class="p10">
+    <ng-container *ngIf="accountInfo;else forLogged">
+        <div i18n>
+            You logged as {{accountInfo.login}}
+        </div>
+        <div>
+            <button i18n mat-flat-button (click)="logout()">Logout</button>
+        </div>
+        <div>
+            <button i18n mat-flat-button (click)="deleteAccount()">Delete account</button>
+        </div>
+    </ng-container>
+    <ng-template #forLogged>
+        <div i18n class="p10">
+            Login
+        </div>
+        <div>
+            <div>
+                <mat-form-field appearance="outline">
+                    <mat-label i18n>Login</mat-label>
+                    <input matInput type="text"
+                           autocomplete="off" [(ngModel)]="credentials.login" required>
+                </mat-form-field>
+            </div>
+        </div>
+        <div>
+            <div>
+                <mat-form-field appearance="outline">
+                    <mat-label i18n>Password</mat-label>
+                    <input matInput type="password"
+                           autocomplete="off" [(ngModel)]="credentials.password" required>
+                </mat-form-field>
+            </div>
+        </div>
+        <ng-container *ngIf="error">
+            <div class="red">
+                {{error}}
+            </div>
+        </ng-container>
+        <div>
+            <button i18n="@@Login_button" mat-flat-button (click)="login()">Login</button>
+        </div>
+        <div>
+            <button i18n mat-flat-button (click)="register()">Register</button>
+        </div>
+    </ng-template>
+</div>

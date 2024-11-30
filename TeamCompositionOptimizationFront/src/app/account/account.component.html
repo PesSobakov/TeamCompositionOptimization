@@ -1,0 +1,90 @@
+<div class="p10">
+    <ng-container *ngIf="accountInfo">
+        <ng-container *ngIf="accountInfo.isSuperuser" i18n>
+            You are superuser
+        </ng-container>
+        <div>
+            <span i18n>
+                Login
+            </span>
+            <span>
+                {{accountInfo.login}}
+            </span>
+        </div>
+        <div>
+            <span i18n>
+                Subscription
+            </span>
+            <span>
+                {{accountInfo.subscription.name}}
+            </span>
+        </div>
+        <div>
+            <span i18n>
+                Candidates
+            </span>
+            <span>
+                {{accountInfo.subscription.maxCandidatesCount}}
+            </span>
+        </div>
+        <div>
+            <span i18n>
+                Competencies
+            </span>
+            <span>
+                {{accountInfo.subscription.maxCompetenciesCount}}
+            </span>
+        </div>
+        <div>
+            <span i18n>
+                Subscription due date
+            </span>
+            <span>
+                {{accountInfo.subscriptionDueDate.toISOString().slice(0,10)}}
+            </span>
+        </div>
+    </ng-container>
+    <ng-container *ngIf="subscriptions">
+        <div>
+            <div class="p10" i18n>
+                Change subscription
+            </div>
+            <table>
+                <tr>
+                    <th i18n>
+                        Name
+                    </th>
+                    <th i18n>
+                        Candidates
+                    </th>
+                    <th i18n>
+                        Competencies
+                    </th>
+                </tr>
+                <ng-container *ngFor="let subscription of subscriptions">
+                    <tr>
+                        <td>
+                            {{subscription.name}}
+                        </td>
+                        <td>
+                            {{subscription.maxCandidatesCount}}
+                        </td>
+                        <td>
+                            {{subscription.maxCompetenciesCount}}
+                        </td>
+                        <td>
+                            <ng-container *ngIf="accountInfo">
+                                <ng-container *ngIf="accountInfo.subscription.id==subscription.id;else getSubsctiption">
+                                    <button i18n mat-stroked-button disabled>This is your subscription</button>
+                                </ng-container>
+                            </ng-container>
+                            <ng-template #getSubsctiption>
+                                <button i18n mat-stroked-button (click)="changeSubscription(subscription.id)">Get</button>
+                            </ng-template>
+                        </td>
+                    </tr>
+                </ng-container>
+            </table>
+        </div>
+    </ng-container>
+</div>

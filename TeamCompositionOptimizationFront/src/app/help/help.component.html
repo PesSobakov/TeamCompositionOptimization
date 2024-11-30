@@ -1,0 +1,75 @@
+<div class="flex-row">
+    <div class="p10 w30">
+        <ng-container *ngIf="accountInfo?.isSuperuser; else normalNav">
+            <ng-container *ngFor="let name of pageNames$ | async">
+                <div>
+                         <a mat-stroked-button class="w100" [routerLink]="['/help', name.id]">
+                            {{ name.name }}
+                        </a>
+                </div>
+            </ng-container>
+                 <div>
+                    <button i18n mat-stroked-button class="w100" (click)="createPage()">Create new</button>
+                </div>
+        </ng-container>
+        <ng-template #normalNav>
+            <ng-container *ngFor="let name of pageNames$ | async">
+                <div>
+                    <ng-container *ngIf="isCorrectLocale(name)">
+                        <a mat-stroked-button class="w100" [routerLink]="['/help', name.id]">
+                            {{ name.name }}
+                        </a>
+                    </ng-container>
+                </div>
+            </ng-container>
+        </ng-template>
+    </div>
+    <div class="p10 w70">
+        <div *ngIf="!isEditing">
+            <div *ngIf="page as currentPage;else helpHome">
+                <ng-container *ngIf="accountInfo?.isSuperuser">
+                    <button i18n mat-stroked-button (click)="startEdit(currentPage)">Edit</button>
+                    <button i18n mat-stroked-button (click)="delete(currentPage.id!)">Delete</button>
+                </ng-container>  <p>{{currentPage.name}}</p>
+                <p class="content">{{currentPage.text}}</p>
+            </div>
+
+            <ng-template #helpHome>
+                <div>
+                    <p i18n>Help</p>
+                    <p i18n>Use navigation to open help pages</p>
+                </div>
+            </ng-template>
+        </div>
+        <div *ngIf="isEditing">
+            <div>
+                <div>
+                    <span><button i18n mat-stroked-button (click)="confirmEdit(pageEdit)">Confirm</button></span>
+                    <span><button i18n mat-stroked-button (click)="cancel()">Cancel</button></span>
+                </div>
+                <div>
+                    <mat-form-field appearance="outline">
+                        <mat-label i18n>Name</mat-label>
+                        <input matInput type="text" [(ngModel)]="pageEdit.name" />
+                    </mat-form-field>
+                </div>
+                <div>
+
+                    <mat-form-field appearance="outline">
+                        <mat-label i18n>Name</mat-label>
+                        <mat-select [(ngModel)]="pageEdit.locale">
+                            <mat-option value="en">en</mat-option>
+                            <mat-option value="ua">ua</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+                <div>
+                    <mat-form-field class="w100" appearance="outline">
+                        <mat-label i18n>Text</mat-label>
+                        <textarea matInput [(ngModel)]="pageEdit.text"></textarea>
+                    </mat-form-field>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

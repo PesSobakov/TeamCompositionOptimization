@@ -1,0 +1,18 @@
+.vertical-text {
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+}
+
+.width5{
+    width: 5ch;
+}
+.width10 {
+  width: 10ch;
+}
+.width20 {
+  width: 20ch;
+}
+
+.selected-dark {
+  background-color: rgba(0, 0, 0, 0.2);
+}
