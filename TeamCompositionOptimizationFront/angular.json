@@ -38,9 +38,6 @@
             "customWebpackConfig": {
               "path": "src/custom-webpack.config.ts"
             },
-            //"progress": false,
-            //"builder": "@angular-devkit/build-angular:application",
-            //"options": {
             "outputPath": "dist/team-composition-optimization-front",
             "index": "src/index.html",
             "main": "src/main.ts",
@@ -102,7 +99,6 @@
         },
         "serve": {
           "builder": "@angular-builders/custom-webpack:dev-server",
-          //"builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
               "buildTarget": "TeamCompositionOptimizationFront:build:production"

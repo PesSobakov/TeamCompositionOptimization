@@ -54,10 +54,10 @@ export class OptimizationComponent
   competencyCreate: Competency = <Competency>{};
   isCreatingCompetency: boolean = false;
 
-  threshold: number = 1;
-  budget: number = 10000;
-  laboriousness: number = 10;
-  time: number = 1;
+  threshold: number = 0;
+  budget: number = 0;
+  laboriousness: number = 0;
+  time: number = 0;
 
   optimizationError?: string;
 
@@ -102,6 +102,11 @@ export class OptimizationComponent
   getCompliance(teamOption: TeamOption, indicator: Indicator)
   {
     return teamOption.maxCompetencies.find((x) => { return x.competencyId == indicator.competency.id })
+  }
+  joinCandidateNames(candidates: Candidate[])
+  {
+    let names = candidates.map(x => x.name);
+    return names.join(", ");
   }
 
   getIndicatorValid(indicator: Indicator)
@@ -229,11 +234,13 @@ export class OptimizationComponent
           changed = true;
         }
       }
+      /*
       let filteredCandidateCompetencies = candidate.competencies.filter((x) => { return (this.getCompetencyById(x.competencyId) !== undefined); });
       if (filteredCandidateCompetencies.length != candidate.competencies.length) {
         candidate.competencies = filteredCandidateCompetencies;
         changed = true;
       }
+      */
       if (changed) {
         this.api.patchCandidate(candidate.id, candidate).subscribe({
           error: (error: HttpErrorResponse) =>
@@ -244,7 +251,7 @@ export class OptimizationComponent
           },
           complete: () =>
           {
-            this.updateCandidates();
+            //this.updateCandidates();
           }
         });
       }
@@ -457,7 +464,7 @@ export class OptimizationComponent
   }
   createCandidate()
   {
-    this.candidateCreate = <Candidate>{ salary: 10, workingTime: 40 };
+    this.candidateCreate = <Candidate>{ salary: 0, workingTime: 0 };
     this.candidateCreate.competencies = this.competencies.map((item) => { return <CandidateCompetency>{ competencyId: item.id, value: 0, deviationLeft: 0, deviationRight: 0 } })
     this.isCreatingCandidate = true;
     this.candidateCreateValid = this.candidateCreate.competencies.map((x) => { return <CandidateCompetencyValid>{ id: x.competencyId } });
@@ -539,7 +546,7 @@ export class OptimizationComponent
       next: (res) =>
       {
         this.competencies = res ?? [];
-        this.indicators = this.competencies.map((item) => { return <Indicator>{ competencyId: item.id, value: 1, deviation: 0, weight: 1 } });
+        this.indicators = this.competencies.map((item) => { return <Indicator>{ competencyId: item.id, value: 0, deviation: 0, weight: 0 } });
 
         let newCheckedIndicators = this.competencies.map((item) => { return <IndicatorChecked>{ id: item.id, isChecked: false } });
         for (var i = 0; i < newCheckedIndicators.length; i++) {

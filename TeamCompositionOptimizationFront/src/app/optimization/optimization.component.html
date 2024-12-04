@@ -6,7 +6,7 @@
             </mat-expansion-panel-header>
             <div>
                 <div i18n class="p10">
-                    Competencies
+                    Competency requirements
                 </div>
                 <div class="p10">
                     <table>
@@ -344,7 +344,7 @@
                     <mat-panel-title i18n> Ranked candidates </mat-panel-title>
                 </mat-expansion-panel-header>
                 <div class="p10">
-                    <table>
+                    <table class="lines">
                         <thead>
                             <tr>
                                 <th i18n>
@@ -383,7 +383,7 @@
                 </div>
 
                 <div class="p10">
-                    <table>
+                    <table class="lines">
                         <thead>
                             <tr>
                                 <th i18n rowspan="2">
@@ -495,10 +495,10 @@
                                 </div>
                             </div>
                             <div i18n class="p10">
-                                Competencies
+                                Competency requirements
                             </div>
                             <div class="p10">
-                                <table>
+                                <table class="lines">
                                     <thead>
                                         <tr>
                                             <th i18n>
@@ -539,7 +539,7 @@
                                 Candidates
                             </div>
                             <div class="p10">
-                                <table>
+                                <table class="lines">
                                     <thead>
                                         <tr>
                                             <th i18n rowspan="2">
@@ -598,14 +598,14 @@
                                 Team options
                             </div>
                             <div class="p10">
-                                <table>
+                                <table class="lines">
                                     <thead>
                                         <tr>
                                             <th i18n rowspan="2">
                                                 Candidates
                                             </th>
                                             <th i18n rowspan="2">
-                                                Sum of max competencies
+                                                Sum of max competencies multiplied by weight
                                             </th>
                                             <th i18n rowspan="2">
                                                 Sum of competencies multiplied by weight
@@ -632,9 +632,7 @@
                                         <ng-container *ngFor="let teamOption of currentResult.teamOptions">
                                             <tr>
                                                 <td>
-                                                    <ng-container *ngFor="let candidate of teamOption.candidates">
-                                                        <span> {{candidate.name}} </span>
-                                                    </ng-container>
+                                                    {{joinCandidateNames(teamOption.candidates)}}
                                                 </td>
                                                 <td>
                                                     {{roundNumber(teamOption.criteria1)}}

@@ -18,7 +18,7 @@ app-optimization {
 
 .main-container {
   flex-grow: 1;
-  width:100%;
+  width: 100%;
 }
 
 .navigation {
@@ -82,8 +82,8 @@ app-optimization {
   width: 100%;
 }
 
-.h100{
-height:100%;
+.h100 {
+  height: 100%;
 }
 
 .w-fill {
@@ -117,30 +117,45 @@ height:100%;
   align-items: flex-start;
 }
 
-.flex-grow-1{
-    flex-grow:1;
+.flex-grow-1 {
+  flex-grow: 1;
 }
 
-.box32{
-    width:32px;
-    height:32px;
+.box32 {
+  width: 32px;
+  height: 32px;
 }
+
 .invalid-input {
   border-color: red;
   background-color: salmon;
 }
 
+table.lines {
+  border-collapse: collapse;
+}
+
+  table.lines tbody tr:last-child td {
+    border-bottom: none;
+  }
+
+  table.lines tbody tr td {
+    text-align: center;
+    border-bottom: 1px solid rgb(0, 0, 0, 0.25);
+  }
+
+  table.lines thead tr th {
+    text-align: center;
+  }
+
+
+
 table tbody tr td {
   text-align: center;
-  /*border-style: solid;
-  border-color: rgba(0, 0, 0, 0.2);
-  border-width: 1px;*/
 }
 
 table thead tr th {
   text-align: center;
-  /*border-style: solid;
-  border-color: rgba(0, 0, 0, 0.4);
-  border-width: 1px;*/
 }
+
 /* You can add global styles to this file, and also import other style files */

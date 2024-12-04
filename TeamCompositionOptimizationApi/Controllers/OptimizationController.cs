@@ -484,6 +484,11 @@ namespace TeamCompositionOptimizationApi.Controllers
 
             List<Indicator> indicators = [];
             List<Competency> competencies = [];
+            double weightSum = optimizationDto.Indicators.Sum(x => x.Weight);
+            if (weightSum == 0)
+            {
+                weightSum = 1;
+            }
             foreach (var item in optimizationDto.Indicators)
             {
                 Competency? competency = allCompetencies.Where(x => x.Id == item.CompetencyId).FirstOrDefault();
@@ -498,7 +503,7 @@ namespace TeamCompositionOptimizationApi.Controllers
                     Competency = competency,
                     Value = item.Value,
                     Deviation = item.Deviation,
-                    Weight = item.Weight
+                    Weight = item.Weight / weightSum
                 };
                 indicators.Add(indicator);
             }
@@ -620,6 +625,11 @@ namespace TeamCompositionOptimizationApi.Controllers
 
             List<Indicator> indicators = [];
             List<Competency> competencies = [];
+            double weightSum = selectDto.Indicators.Sum(x => x.Weight);
+            if (weightSum == 0)
+            {
+                weightSum = 1;
+            }
             foreach (var item in selectDto.Indicators)
             {
                 Competency? competency = allCompetencies.Where(x => x.Id == item.CompetencyId).FirstOrDefault();
@@ -634,7 +644,7 @@ namespace TeamCompositionOptimizationApi.Controllers
                     Competency = competency,
                     Value = item.Value,
                     Deviation = item.Deviation,
-                    Weight = item.Weight
+                    Weight = item.Weight / weightSum
                 };
                 indicators.Add(indicator);
             }
@@ -992,11 +1002,11 @@ namespace TeamCompositionOptimizationApi.Controllers
 
             List<Competency> competencies =
             [
-                new Competency() { Name = ".NET"},
-                new Competency() { Name = "JavaScript"},
-                new Competency() { Name = "Angular"},
-                new Competency() { Name = "SQL"},
-                new Competency() { Name = "Azure"}
+                new Competency() { Name = "Design patterns"},
+                new Competency() { Name = "Nest.js"},
+                new Competency() { Name = "OOP paradigm"},
+                new Competency() { Name = "S.O.L.I.D Principles"},
+                new Competency() { Name = "Functional testing"}
             ];
 
             List<Indicator> indicators =
@@ -1010,6 +1020,15 @@ namespace TeamCompositionOptimizationApi.Controllers
 
             List<Candidate> candidates =
             [
+                new Candidate { Name ="Robert", WorkingTime = 30,Salary = 10,
+                    Competencies =
+                    [
+                        new CandidateCompetency(){ Competency = competencies[0], Value = 4, DeviationLeft = 1, DeviationRight = 0},
+                        new CandidateCompetency(){ Competency = competencies[1], Value = 1, DeviationLeft = 0.5, DeviationRight = 1},
+                        new CandidateCompetency(){ Competency = competencies[2], Value = 1, DeviationLeft = 0.5, DeviationRight = 0.5},
+                        new CandidateCompetency(){ Competency = competencies[3], Value = 2, DeviationLeft = 1, DeviationRight = 1},
+                        new CandidateCompetency(){ Competency = competencies[4], Value = 0, DeviationLeft = 0, DeviationRight = 1}
+                    ]},
                 new Candidate { Name ="John", WorkingTime = 30,Salary = 10,
                     Competencies =
                     [
@@ -1022,22 +1041,39 @@ namespace TeamCompositionOptimizationApi.Controllers
                 new Candidate { Name ="Bill", WorkingTime = 20,Salary = 15,
                     Competencies =
                     [
-                        new CandidateCompetency(){ Competency = competencies[0], Value = 3, /*DeviationLeft = 1,*/ DeviationRight = 1},
-                        new CandidateCompetency(){ Competency = competencies[1], Value = 1, /*DeviationLeft = 0.5,*/ DeviationRight = 1},
-                        new CandidateCompetency(){ Competency = competencies[2], Value = 2, /*DeviationLeft = 0.5,*/ DeviationRight = 1},
-                        new CandidateCompetency(){ Competency = competencies[3], Value = 2, /*DeviationLeft = 1,*/ DeviationRight = 1},
-                        new CandidateCompetency(){ Competency = competencies[4], Value = 4, /*DeviationLeft = 1,*/ DeviationRight = 0}
+                        new CandidateCompetency(){ Competency = competencies[0], Value = 3, DeviationLeft = 1, DeviationRight = 1},
+                        new CandidateCompetency(){ Competency = competencies[1], Value = 1, DeviationLeft = 0.5, DeviationRight = 1},
+                        new CandidateCompetency(){ Competency = competencies[2], Value = 2, DeviationLeft = 0.5, DeviationRight = 1},
+                        new CandidateCompetency(){ Competency = competencies[3], Value = 2, DeviationLeft = 1, DeviationRight = 1},
+                        new CandidateCompetency(){ Competency = competencies[4], Value = 4, DeviationLeft = 1, DeviationRight = 0}
+                    ]},
+                new Candidate { Name ="Scott", WorkingTime = 30,Salary = 8,
+                    Competencies =
+                    [
+                        new CandidateCompetency(){ Competency = competencies[0], Value = 1, DeviationLeft = 0.5, DeviationRight = 1},
+                        new CandidateCompetency(){ Competency = competencies[1], Value = 1, DeviationLeft = 0.5, DeviationRight = 1},
+                        new CandidateCompetency(){ Competency = competencies[2], Value = 2, DeviationLeft = 1, DeviationRight = 1},
+                        new CandidateCompetency(){ Competency = competencies[3], Value = 2, DeviationLeft = 1, DeviationRight = 1},
+                        new CandidateCompetency(){ Competency = competencies[4], Value = 3, DeviationLeft = 1, DeviationRight = 1}
                     ]},
                 new Candidate { Name ="Paul", WorkingTime = 30,Salary = 8,
                     Competencies =
                     [
-                        new CandidateCompetency(){ Competency = competencies[0], Value = 3, /*DeviationLeft = 0.5,*/ DeviationRight = 0.5},
-                        new CandidateCompetency(){ Competency = competencies[1], Value = 1, /*DeviationLeft = 0.5,*/ DeviationRight = 0.5},
-                        new CandidateCompetency(){ Competency = competencies[2], Value = 2, /*DeviationLeft = 1,*/ DeviationRight = 0.5},
-                        new CandidateCompetency(){ Competency = competencies[3], Value = 2, /*DeviationLeft = 1,*/ DeviationRight = 0.5},
-                        new CandidateCompetency(){ Competency = competencies[4], Value = 3, /*DeviationLeft = 0.4,*/ DeviationRight = 0.4}
+                        new CandidateCompetency(){ Competency = competencies[0], Value = 3, DeviationLeft = 0.5, DeviationRight = 0.5},
+                        new CandidateCompetency(){ Competency = competencies[1], Value = 1, DeviationLeft = 0.5, DeviationRight = 0.5},
+                        new CandidateCompetency(){ Competency = competencies[2], Value = 2, DeviationLeft = 1, DeviationRight = 0.5},
+                        new CandidateCompetency(){ Competency = competencies[3], Value = 2, DeviationLeft = 1, DeviationRight = 0.5},
+                        new CandidateCompetency(){ Competency = competencies[4], Value = 3, DeviationLeft = 0.4, DeviationRight = 0.4}
                     ]},
             ];
+            foreach (var candidate in candidates)
+            {
+                foreach (var competency in candidate.Competencies)
+                {
+                    competency.DeviationLeft = competency.DeviationRight;
+                }
+            }
+
 
             await _databaseContext.AddRangeAsync(indicators);
             users[0].Competencies.AddRange(competencies);
@@ -1045,7 +1081,19 @@ namespace TeamCompositionOptimizationApi.Controllers
             await _databaseContext.Users.AddRangeAsync(users);
             await _databaseContext.SaveChangesAsync();
 
-            OptimizationResult optimizationResult = Utilities.Optimize(indicators, candidates, 0.9, 5000, 250, 5, competencies);
+            List<Candidate> selectedCandidates = [
+                candidates[1],
+                candidates[2],
+                candidates[4]
+            ];
+
+            (var optimizationIndicators, var optimizationCandidates, var optimizationCompetencies) = Utilities.CopyIndicatorsCandidatesCompetencies(indicators, selectedCandidates, competencies);
+            await _databaseContext.Indicators.AddRangeAsync(optimizationIndicators);
+            await _databaseContext.Candidates.AddRangeAsync(optimizationCandidates);
+            await _databaseContext.Competencies.AddRangeAsync(optimizationCompetencies);
+            await _databaseContext.SaveChangesAsync();
+
+            OptimizationResult optimizationResult = Utilities.Optimize(optimizationIndicators, optimizationCandidates, 0.9, 5000, 250, 5, optimizationCompetencies);
 
             List<HelpPage> helpPages =
             [

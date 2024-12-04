@@ -70,7 +70,7 @@ export class LoginComponent
       {
         if (error.error.errors.login) {
           if (error.error.errors.login == "This email already used") {
-            this.error = $localize`This email already used`;
+            this.error = $localize`This login already used`;
           }
           else {
             this.error = $localize`Register error`;

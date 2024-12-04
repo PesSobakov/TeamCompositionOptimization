@@ -349,7 +349,12 @@ namespace TeamCompositionOptimizationApi.Services
                     tempTeamOption.Candidates.Add(filteredCandidates[chosen[i]]);
                 }
 
-                tempTeamOption.Criteria1 = tempTeamOption.MaxCompetencies.Sum(x => x.Value);
+                double Criteria1 = 0;
+                for (int j = 0; j < indicatorsCount; j++)
+                {
+                    Criteria1 += tempTeamOption.MaxCompetencies[j].Value * indicators[j].Weight;
+                }
+                tempTeamOption.Criteria1 = Criteria1;
 
                 if (tempTeamOption.MaxCompetencies.Min(x => x.Membership) >= threshold)
                 {
