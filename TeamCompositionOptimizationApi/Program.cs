@@ -21,7 +21,7 @@ namespace TeamCompositionOptimizationApi
                   name: CORSOpenPolicy,
                   builder =>
                   {
-                      builder.WithOrigins("http://localhost:4200", "https://calm-island-066f9830f.5.azurestaticapps.net", "*").AllowAnyHeader().AllowAnyMethod().AllowCredentials();
+                      builder.WithOrigins("http://localhost:4200", "https://victorious-beach-01a30820f.4.azurestaticapps.net", "*").AllowAnyHeader().AllowAnyMethod().AllowCredentials();
                   });
             });
 
